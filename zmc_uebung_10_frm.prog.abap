@@ -268,9 +268,15 @@ ENDFORM.
 *----------------------------------------------------------------------*
 FORM ausgewahlt_zellen  CHANGING pt_zellen TYPE lvc_t_cell.
 
-  DATA: ls_zellen  TYPE lvc_s_cell,
-        lt_row     TYPE lvc_s_row OCCURS 0,
-        ls_row     TYPE lvc_s_row.
+  DATA: ls_zellen TYPE lvc_s_cell,
+        ls_zell_2 TYPE lvc_s_cell,
+        lt_row    TYPE lvc_s_row OCCURS 0,
+        ls_row    TYPE lvc_s_row,
+        ls_col    TYPE lvc_s_scol,
+        counter   TYPE i,
+        lines     TYPE i,
+        row_id    TYPE i,
+        lines_2   TYPE i.
 
   CALL METHOD gr_alvgrid->get_selected_cells
     IMPORTING
@@ -279,9 +285,15 @@ FORM ausgewahlt_zellen  CHANGING pt_zellen TYPE lvc_t_cell.
   LOOP AT pt_zellen INTO ls_zellen.
     ls_row-index = ls_zellen-row_id .
     COLLECT ls_row INTO lt_row.
+
+    ls_col-fname = ls_zellen-col_id.
+    ls_col-color-col = '7'.
+    ls_col-color-int = '1'.
+
+    APPEND ls_col TO gt_sflight-cellcolors.
   ENDLOOP.
 
-  CLEAR:gs_list, ls_row.
+  CLEAR: gs_list, ls_row, ls_zellen.
 
   LOOP AT lt_row INTO ls_row.
     READ TABLE gt_list INTO  gs_list INDEX ls_row-index.
@@ -290,9 +302,51 @@ FORM ausgewahlt_zellen  CHANGING pt_zellen TYPE lvc_t_cell.
     CLEAR:gs_list, ls_zellen, gs_sflight.
   ENDLOOP.
 
-call SCREEN 0200.
+  DESCRIBE TABLE gt_sflight LINES lines_2.
 
-" tek satir olarak ilk satir geliyor. ona bakalim ins.
-" sonra renklendirme yapalim ins.
+  LOOP AT gt_sflight INTO gs_sflight.
+
+    counter = counter + 1.
+
+    LOOP AT pt_zellen INTO ls_zellen.
+
+      DESCRIBE TABLE pt_zellen LINES lines.
+
+      IF lines > 1.
+
+        READ TABLE pt_zellen INDEX 2 INTO ls_zell_2.
+
+        ls_col-fname     = ls_zellen-col_id.
+        ls_col-color-col = '7'.
+        ls_col-color-int = '1'.
+
+        APPEND ls_col TO gs_sflight-cellcolors.
+
+        row_id = ls_zellen-row_id.
+
+        DELETE TABLE pt_zellen FROM ls_zellen.
+
+        IF ls_zell_2-row_id NE ls_zellen-row_id.
+          MODIFY gt_sflight INDEX counter FROM gs_sflight.
+          EXIT.
+        ENDIF.
+
+      ELSE.
+
+        ls_col-fname     = ls_zellen-col_id.
+        ls_col-color-col = '7'.
+        ls_col-color-int = '1'.
+
+        APPEND ls_col TO gs_sflight-cellcolors.
+
+        MODIFY gt_sflight INDEX lines_2 FROM gs_sflight.
+
+      ENDIF.
+
+    ENDLOOP.
+
+  ENDLOOP.
+
+  CALL SCREEN 0200.
 
 ENDFORM.

@@ -22,6 +22,8 @@ FORM zeig_alv_2 .
     CHANGING
       ct_fieldcat      = gt_fieldcat_2.
 
+    gs_layout_2-ctab_fname = 'CELLCOLORS'.
+
   IF gr_alvgrid_2 IS INITIAL .
 
     CREATE OBJECT gr_ccontainer_2

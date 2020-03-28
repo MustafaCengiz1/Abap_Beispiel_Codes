@@ -38,5 +38,9 @@ DATA: ok_code LIKE sy-ucomm.
 DATA: gt_exclude TYPE ui_functions.
 DATA: gt_zellen TYPE lvc_t_cell.
 
-  DATA: gt_sflight LIKE sflight OCCURS 0,
-        gs_sflight LIKE LINE OF gt_sflight.
+DATA: BEGIN OF gt_sflight OCCURS 0.
+        INCLUDE STRUCTURE sflight.
+DATA: cellcolors TYPE lvc_t_scol.
+DATA: END OF gt_sflight.
+
+DATA: gs_sflight LIKE LINE OF gt_sflight.
