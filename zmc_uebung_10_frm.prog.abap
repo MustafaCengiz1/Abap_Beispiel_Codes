@@ -13,37 +13,6 @@ FORM get_data .
 
   SELECT * FROM sflight INTO CORRESPONDING FIELDS OF TABLE gt_list.
 
-  LOOP AT gt_list.
-    IF gt_list-carrid = 'AA'.
-      gt_list-carrid_handle = '1'.
-    ENDIF.
-    IF gt_list-carrid = 'AZ'.
-      gt_list-carrid_handle = '2'.
-    ENDIF.
-    IF gt_list-connid = '17'.
-      gt_list-connid_handle = '3'.
-    ENDIF.
-    IF gt_list-connid = '64'.
-      gt_list-connid_handle = '4'.
-    ENDIF.
-*    IF  gt_list-planetype = '747-400'.
-*        gt_list-dd_hndl = '1'.
-*    ENDIF.
-*    IF  gt_list-planetype = 'A310-300'.
-*        gt_list-dd_hndl = '1'.
-*    ENDIF.
-*    IF  gt_list-planetype = 'A319'.
-*        gt_list-dd_hndl = '1'.
-*    ENDIF.
-*    IF  gt_list-planetype = 'DC-10-10'.
-*        gt_list-dd_hndl = '1'.
-*    ENDIF.
-*    IF  gt_list-planetype = '727-200'.
-*        gt_list-dd_hndl = '1'.
-*    ENDIF.
-    MODIFY gt_list.
-  ENDLOOP.
-
 ENDFORM.
 *&---------------------------------------------------------------------*
 *&      Form  ZEIG_ALV
@@ -65,10 +34,12 @@ FORM zeig_alv .
       EXPORTING
         i_parent = gr_ccontainer.
 
+    gs_variant-report = sy-repid.
+
     CALL METHOD gr_alvgrid->set_table_for_first_display
       EXPORTING
-*       is_variant           =
-*       i_save               =
+        is_variant           = gs_variant
+        i_save               = 'A'
 *       i_default            = 'X'
         is_layout            = gs_layout
 *       is_print             =
@@ -128,11 +99,7 @@ ENDFORM.
 FORM vor_layo .
 
   gs_layout-zebra      = 'X' .
-  gs_layout-grid_title = 'Flights' .
-  gs_layout-smalltitle = 'X' .
   gs_layout-sel_mode   = 'D' .
-  gs_layout-info_fname = 'ROWCOLOR' .
-  gs_layout-ctab_fname = 'CELLCOLORS'.
 
 ENDFORM.
 *&---------------------------------------------------------------------*
@@ -199,17 +166,15 @@ FORM sort_table  CHANGING pt_sort TYPE lvc_t_sort.
 
   ls_sort-spos      = '1'.
   ls_sort-fieldname = 'SEATSOCC' .
-  ls_sort-up        = space. "A to Z
-  ls_sort-down      = 'X'.   "Z to A
+  ls_sort-up        = space. "von A bis Z
+  ls_sort-down      = 'X'.   "von Z bis A
   APPEND ls_sort TO pt_sort.
 
   ls_sort-spos      = '2' .
   ls_sort-fieldname = 'FLDATE'.
   ls_sort-up        = space .
-  ls_sort-down      = 'X' . "Z to A
+  ls_sort-down      = 'X' . "von Z bis A
   APPEND ls_sort TO pt_sort .
-
-*  FREE: gr_alvgrid, gr_ccontainer.
 
 ENDFORM.
 *&---------------------------------------------------------------------*
@@ -221,9 +186,9 @@ ENDFORM.
 *----------------------------------------------------------------------*
 FORM filter_liste  CHANGING pt_filt TYPE lvc_t_filt.
 
-  DATA ls_filt TYPE lvc_s_filt .
-  DATA: lt_fields TYPE TABLE OF sval,
-        ls_fields LIKE LINE OF lt_fields.
+  DATA: ls_filt   TYPE          lvc_s_filt,
+        lt_fields TYPE TABLE OF sval,
+        ls_fields LIKE LINE OF  lt_fields.
 
   ls_fields-tabname   = 'ZMC_2_DATUM'.
   ls_fields-fieldname = 'DATUM1'.
@@ -243,20 +208,18 @@ FORM filter_liste  CHANGING pt_filt TYPE lvc_t_filt.
     TABLES
       fields      = lt_fields.
 
-
   READ TABLE lt_fields INTO ls_fields INDEX 1.
-  ls_filt-low = ls_fields-value .
+  ls_filt-low = ls_fields-value.
   CLEAR: ls_fields.
 
   READ TABLE lt_fields INTO ls_fields INDEX 2.
-  ls_filt-high = ls_fields-value .
+  ls_filt-high = ls_fields-value.
   CLEAR: ls_fields.
 
-  ls_filt-fieldname = 'FLDATE' .
-  ls_filt-sign = 'E' .
-  ls_filt-option = 'BT' .
-  APPEND ls_filt TO pt_filt .
-
+  ls_filt-fieldname = 'FLDATE'.
+  ls_filt-sign = 'E'.
+  ls_filt-option = 'BT'.
+  APPEND ls_filt TO pt_filt.
 
 ENDFORM.
 *&---------------------------------------------------------------------*
@@ -283,7 +246,7 @@ FORM ausgewahlt_zellen  CHANGING pt_zellen TYPE lvc_t_cell.
       et_cell = pt_zellen.
 
   LOOP AT pt_zellen INTO ls_zellen.
-    ls_row-index = ls_zellen-row_id .
+    ls_row-index = ls_zellen-row_id.
     COLLECT ls_row INTO lt_row.
 
     ls_col-fname = ls_zellen-col_id.
@@ -296,10 +259,13 @@ FORM ausgewahlt_zellen  CHANGING pt_zellen TYPE lvc_t_cell.
   CLEAR: gs_list, ls_row, ls_zellen.
 
   LOOP AT lt_row INTO ls_row.
+
     READ TABLE gt_list INTO  gs_list INDEX ls_row-index.
     MOVE-CORRESPONDING gs_list TO gs_sflight.
     APPEND gs_sflight TO gt_sflight.
+
     CLEAR:gs_list, ls_zellen, gs_sflight.
+
   ENDLOOP.
 
   DESCRIBE TABLE gt_sflight LINES lines_2.
@@ -347,6 +313,63 @@ FORM ausgewahlt_zellen  CHANGING pt_zellen TYPE lvc_t_cell.
 
   ENDLOOP.
 
+  DATA ls_style TYPE lvc_s_styl .
+
+  LOOP AT gt_sflight INTO gs_sflight.
+
+    CLEAR: ls_style.
+
+    IF gs_sflight-paymentsum > 48231.
+
+      ls_style-fieldname = 'PAYMENTSUM'.
+      ls_style-style = cl_gui_alv_grid=>mc_style_button.
+      APPEND ls_style TO gs_sflight-cellstyles.
+
+    ENDIF.
+
+    IF gs_sflight-fldate > '20190101'.
+
+      CLEAR: ls_style.
+      ls_style-fieldname = 'FLDATE'.
+      ls_style-style = cl_gui_alv_grid=>mc_style_hotspot.
+      INSERT ls_style INTO TABLE gs_sflight-cellstyles.
+
+      " Hier können wir den Befehl 'APPEND' nicht benutzen, weil
+      " cellstyles ein sorted table ist.
+
+    ENDIF.
+
+    MODIFY gt_sflight FROM gs_sflight.
+
+    CLEAR: gs_sflight.
+
+  ENDLOOP.
+
   CALL SCREEN 0200.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  CHECK_VARIANT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM check_variant .
+
+  gs_variant-report = sy-repid.
+
+  CALL FUNCTION 'REUSE_ALV_VARIANT_F4'
+    EXPORTING
+      is_variant = gs_variant
+     I_SAVE     = 'X'
+     I_DISPLAY_VIA_GRID        = 'X'
+    IMPORTING
+      es_variant = gs_variant.
+
+  IF sy-subrc = 0.
+    variant = gs_variant-variant.
+  ENDIF.
 
 ENDFORM.

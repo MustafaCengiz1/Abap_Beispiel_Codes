@@ -7,13 +7,17 @@
 *       text
 *----------------------------------------------------------------------*
 MODULE user_command_0200 INPUT.
+
   CASE ok_code.
+
     WHEN 'ZURUCK'.
+
       CLEAR: gs_sflight.
+
       REFRESH gt_sflight.
+
       LEAVE TO SCREEN 0.
-*  	WHEN .
-*  	WHEN OTHERS.
+
   ENDCASE.
 
 ENDMODULE.

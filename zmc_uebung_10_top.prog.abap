@@ -13,15 +13,8 @@ DATA: gr_alvgrid_2    TYPE REF TO cl_gui_alv_grid,
       gs_fieldcat_2   TYPE lvc_s_fcat,
       gs_layout_2     TYPE lvc_s_layo.
 
-DATA: BEGIN OF gt_list OCCURS 0,
-        sira TYPE n LENGTH 3.
+DATA: BEGIN OF gt_list OCCURS 0.
         INCLUDE STRUCTURE sflight.
-DATA: rowcolor(4).
-DATA: cellcolors    TYPE lvc_t_scol.
-DATA: carrid_handle TYPE int4.
-DATA: connid_handle TYPE int4.
-*DATA: dd_hndl       TYPE int4.
-DATA: cellstyles TYPE lvc_t_styl.
 DATA: END OF gt_list.
 
 DATA: gs_list LIKE LINE OF gt_list.
@@ -34,13 +27,23 @@ DATA: gs_cellcolor TYPE lvc_s_scol,
       gt_ddval     TYPE lvc_t_drop.
 
 DATA: gs_variant TYPE disvariant.
-DATA: ok_code LIKE sy-ucomm.
+DATA: ok_code    LIKE sy-ucomm.
 DATA: gt_exclude TYPE ui_functions.
-DATA: gt_zellen TYPE lvc_t_cell.
+DATA: gt_zellen  TYPE lvc_t_cell.
 
 DATA: BEGIN OF gt_sflight OCCURS 0.
         INCLUDE STRUCTURE sflight.
-DATA: cellcolors TYPE lvc_t_scol.
+DATA: cellcolors     TYPE lvc_t_scol.
+DATA: cellstyles     TYPE lvc_t_styl.
+DATA: plntype_handle TYPE int4.
+DATA: seatsoc_handle TYPE int4.
 DATA: END OF gt_sflight.
 
 DATA: gs_sflight LIKE LINE OF gt_sflight.
+
+DATA: gt_dropdown TYPE lvc_t_drop,
+      gs_dropdown TYPE lvc_s_drop.
+
+SELECTION-SCREEN BEGIN OF BLOCK a1 WITH FRAME TITLE text-001.
+PARAMETERS: variant TYPE disvariant-variant.
+SELECTION-SCREEN END OF BLOCK a1.
