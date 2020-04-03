@@ -1,5 +1,7 @@
 REPORT zmc_uebung_10.
 
+" Class Event Handlung, Hotspot, Pushbutton, Färbung Drilldow und Vrnte.
+
 INCLUDE ZMC_UEBUNG_10_TOP.
 INCLUDE ZMC_UEBUNG_10_CLS.
 INCLUDE ZMC_UEBUNG_10_PBO.

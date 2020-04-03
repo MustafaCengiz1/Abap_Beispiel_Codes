@@ -1,6 +1,9 @@
 *&---------------------------------------------------------------------*
 *&  Include           ZMC_UEBUNG_10_TOP
 *&---------------------------------------------------------------------*
+
+" Class Event Handlung, Hotspot, Pushbutton, Färbung Drilldow und Vrnte.
+
 DATA: gr_alvgrid    TYPE REF TO cl_gui_alv_grid,
       gr_ccontainer TYPE REF TO cl_gui_custom_container,
       gt_fieldcat   TYPE lvc_t_fcat,

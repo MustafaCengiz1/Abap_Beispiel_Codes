@@ -1,6 +1,9 @@
 *&---------------------------------------------------------------------*
 *&  Include           ZMC_UEBUNG_10_CLS
 *&---------------------------------------------------------------------*
+
+" Class Event Handlung, Hotspot, Pushbutton, Färbung Drilldow und Vrnte.
+
 CLASS lcl_event_handler DEFINITION.
 
   PUBLIC SECTION.
