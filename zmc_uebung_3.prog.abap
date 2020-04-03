@@ -1,5 +1,7 @@
 REPORT zmc_uebung_3.
 
+" Ein einfaches Beispiel von ALV mit der Tabelle MARA
+
 TABLES: mara.
 
 DATA: BEGIN OF it_mara occurs 0,
