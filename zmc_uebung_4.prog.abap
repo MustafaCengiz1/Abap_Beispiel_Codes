@@ -1,5 +1,7 @@
 REPORT zmc_uebung_4.
 
+" Ein anderes Beispiel mit verschiedenen Funktionen mit der Tabelle MARC
+
 TABLES: marc.
 
 DATA: BEGIN OF it_marc OCCURS 0,
