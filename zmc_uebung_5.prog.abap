@@ -1,5 +1,7 @@
 REPORT zmc_uebung_5.
 
+" Ein Programm für Personalabteilungsverwaltung
+
 TABLES: zmc_perab.
 
 DATA: lt_info LIKE zmc_perab OCCURS 0.
