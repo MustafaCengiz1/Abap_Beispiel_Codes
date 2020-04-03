@@ -1,6 +1,10 @@
 *&---------------------------------------------------------------------*
 *&  Include           ZMC_UEBUNG_8_TOP
 *&---------------------------------------------------------------------*
+
+" Container ALV (Auch ein Beispiel von FM Number_Get_Next )
+
+
 TABLES: zmc_kurs_2.
 DATA: gc_cont TYPE REF TO cl_gui_custom_container,
       gc_grid TYPE REF TO cl_gui_alv_grid,
