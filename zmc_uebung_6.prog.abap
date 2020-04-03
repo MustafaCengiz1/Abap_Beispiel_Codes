@@ -1,5 +1,7 @@
 REPORT zmc_uebung_6.
 
+" Datenübernahme aus Excel ins interne Format
+
 TYPE-POOLS truxs.
 
 TYPES : BEGIN OF t_airtab,
