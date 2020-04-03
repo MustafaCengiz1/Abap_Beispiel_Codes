@@ -2,6 +2,8 @@ REPORT zmc_uebung_9.
 
 TABLES: zmc_sprache.
 
+" Ein Beispiel für eine dynamische Tabelle und E-Mail Sendung
+
 INCLUDE ZMC_UEBUNG_9_TOP.
 INCLUDE ZMC_UEBUNG_9_FRM.
 INCLUDE ZMC_UEBUNG_9_PBO.

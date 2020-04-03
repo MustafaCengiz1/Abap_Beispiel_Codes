@@ -2,6 +2,8 @@
 *&  Include           ZMC_UEBUNG_9_TOP
 *&---------------------------------------------------------------------*
 
+" Ein Beispiel für eine dynamische Tabelle und E-Mail Sendung
+
 DATA: BEGIN OF gt_table OCCURS 0,
         vorname LIKE  zmc_sprache-vorname,
         name    LIKE  zmc_sprache-name,
