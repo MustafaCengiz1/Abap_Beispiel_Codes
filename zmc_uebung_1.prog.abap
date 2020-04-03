@@ -1,5 +1,7 @@
 REPORT zmc_uebung_1.
 
+" Umwandlung die Stunden in die Sekunden
+
 SELECTION-SCREEN BEGIN OF BLOCK a1 WITH FRAME TITLE text-001 NO INTERVALS.
 PARAMETERS: p1 TYPE i, " die Stunden
             p2 TYPE i, " die Minuten
