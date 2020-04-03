@@ -1,5 +1,7 @@
 REPORT zmc_uebung_2.
 
+" Durch einer Taste die Ubung eins zu schaffen
+
 TABLES: sscrfields.
 
 SELECTION-SCREEN BEGIN OF BLOCK a1 WITH FRAME TITLE text-001 NO INTERVALS.
