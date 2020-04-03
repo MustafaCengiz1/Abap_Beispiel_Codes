@@ -1,5 +1,7 @@
 REPORT zmc_uebung_7.
 
+" ALV (ABAP List Viewer) und andere Funktionalitäten
+
 TABLES: zmc_kurs.
 
 DATA: gt_kurs LIKE zmc_kurs OCCURS 0 WITH HEADER LINE,
