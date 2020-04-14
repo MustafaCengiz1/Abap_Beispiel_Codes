@@ -9,6 +9,7 @@ REPORT ZMC_UEBUNG_16.
 
 " In diesem Beispiel werden wir sehen den Unterschied
 " zwischen Instance und Static Atrributes sehr einfach.
+" M.Cengiz 14.04.2020
 
 CLASS mein_lcl DEFINITION.
 
