@@ -4,7 +4,7 @@ REPORT zmc_uebung_17.
 " In diesem beispiel Code werden wir die Unterschiede zwischen
       " TYPE STANDARD TABLE,
       " TYPE SORTED TABLE,
-      " TYPE SORTED TABLE.
+      " TYPE SORTED TABLE sehen.
 
 " Erstmal die Definierung der Tabellen ist unterschiedlich.
 
